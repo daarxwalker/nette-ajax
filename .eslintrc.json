@@ -1,0 +1,59 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"airbnb-base",
+		"plugin:@typescript-eslint/recommended",
+		"prettier",
+		"prettier/@typescript-eslint"
+	],
+	"plugins": ["@typescript-eslint", "prettier"],
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"rules": {
+		"@typescript-eslint/camelcase": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-member-accessibility": "off",
+		"@typescript-eslint/no-object-literal-type-assertion": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-use-before-define": "off",
+		"@typescript-eslint/prefer-interface": "off",
+		"@typescript-eslint/ban-ts-ignore": "off",
+		"class-methods-use-this": "off",
+		"function-paren-newline": "off",
+		"global-require": "off",
+		"import/extensions": "off",
+		"import/no-extraneous-dependencies": "off",
+		"import/no-unresolved": "off",
+		"import/prefer-default-export": "off",
+		"max-len": "off",
+		"no-magic-numbers": "off",
+		"no-mixed-operators": "off",
+		"no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
+		"no-tabs": "off",
+		"no-plusplus": "off",
+		"no-underscore-dangle": "off",
+		"no-use-before-define": "off",
+		"object-curly-newline": "off",
+		"prefer-spread": "off",
+		"prettier/prettier": "error"
+	},
+	"globals": {
+		"after": false,
+		"afterEach": false,
+		"before": false,
+		"beforeEach": false,
+		"describe": false,
+		"it": false,
+		"require": true,
+		"expect": false,
+		"toEqual": false,
+		"window": false,
+		"document": false,
+		"localStorage": false,
+		"sessionStorage": false,
+		"location": false
+	}
+}

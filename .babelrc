@@ -1,0 +1,23 @@
+{
+	"presets": [
+		"@babel/preset-typescript",
+		["@babel/preset-env", {
+			"targets": {
+				"browsers": ["last 2 Chrome versions"]
+			}
+		}]
+	],
+	"plugins": [
+		["module-resolver", {
+			"alias": {
+				"config": "./src/config",
+				"constant": "./src/constant",
+				"models": "./src/models",
+				"services": "./src/services",
+				"types": "./src/types",
+				"utils": "./src/utils"
+			}
+		}],
+		["@babel/plugin-transform-runtime"]
+	]
+}

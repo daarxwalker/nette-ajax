@@ -1,0 +1,13 @@
+{
+  "semi": false,
+  "useTabs": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "overrides": [
+    { "files": "*.yml", "options": { "useTabs": false } },
+    { "files": "*.json", "options": { "useTabs": false } },
+    { "files": ".eslintrc", "options": { "useTabs": false } },
+    { "files": ".prettierrc", "options": { "useTabs": false } }
+  ]
+}
