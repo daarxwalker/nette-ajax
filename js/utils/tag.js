@@ -1,0 +1,11 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTagNameByElement = void 0;
+
+const getTagNameByElement = element => element.tagName.toLowerCase();
+
+exports.getTagNameByElement = getTagNameByElement;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy91dGlscy90YWcudHMiXSwibmFtZXMiOlsiZ2V0VGFnTmFtZUJ5RWxlbWVudCIsImVsZW1lbnQiLCJ0YWdOYW1lIiwidG9Mb3dlckNhc2UiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFFTyxNQUFNQSxtQkFBbUIsR0FBSUMsT0FBRCxJQUEyQkEsT0FBTyxDQUFDQyxPQUFSLENBQWdCQyxXQUFoQixFQUF2RCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFRhZyB9IGZyb20gJ21vZGVscydcclxuXHJcbmV4cG9ydCBjb25zdCBnZXRUYWdOYW1lQnlFbGVtZW50ID0gKGVsZW1lbnQ6IEVsZW1lbnQpOiBUYWcgPT4gZWxlbWVudC50YWdOYW1lLnRvTG93ZXJDYXNlKCkgYXMgVGFnXHJcbiJdfQ==

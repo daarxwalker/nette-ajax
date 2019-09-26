@@ -2,14 +2,15 @@
   "name": "@daar/nette-ajax",
   "version": "1.0.0",
   "description": "Minimalistic easy-to-use Nette AJAX library",
-  "main": "index.js",
+  "main": "dist/nette-ajax.min.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack --watch --mode development",
-    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline --watch"
+    "watch:js": "babel src --out-dir js --extensions \".ts,.tsx\" --source-maps inline --watch",
+    "build:js": "babel src --out-dir js --extensions \".ts,.tsx\" --source-maps inline"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["nette", "ajax"],
+  "author": "Daar",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.6.2",
@@ -39,5 +40,9 @@
     "@babel/runtime": "^7.6.2",
     "axios": "^0.19.0",
     "debounce": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daarxwalker/nette-ajax.git"
   }
 }
