@@ -122,6 +122,9 @@ const extensionConfig = {
 ```javascript
 netteAjax.ext('EXTENSION_ID', extensionConfig)
 ```
+**Recommendation**: Add new local extension before init. 
+
+**IMPORTANT!**: If you register local extension after init, it will work, but all handlers are automatically re-registered for every new extension and it's really too overkill operation. Be careful with performance issues. 
 
 &nbsp;
 ## **Manual call ajax**

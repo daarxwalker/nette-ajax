@@ -1,5 +1,6 @@
 import { errors } from 'constant'
 import { ExtensionCallbackType } from 'models'
+import { getConfig, registerHandlers } from 'services'
 import { Extension, Extensions, RequestPayloadData, PayloadIncluded } from 'types'
 
 type Payload = PayloadIncluded | Extension | RequestPayloadData | string
@@ -17,10 +18,12 @@ export const registerExtensionsFromGlobal = () => {
 export const registerExtension = (id: string, extension: Extension) => {
 	if (!id) throw new Error(errors.ext.register.missingId)
 	if (!extension) throw new Error(errors.ext.register.missingExt)
+	const config = getConfig()
 	const { onInit } = extension
 
 	if (onInit) onInit(extension)
 	extensions = { ...extensions, [id]: extension }
+	if (config.initialized) registerHandlers()
 }
 
 const getPayload = (type: ExtensionCallbackType, extension: Extension, payload: Payload) => {
