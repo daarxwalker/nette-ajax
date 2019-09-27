@@ -2,10 +2,14 @@ const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
+	devtool: 'source-map',
 	entry: ['./src/index.ts'],
 	output: {
 		filename: './dist/nette-ajax.min.js',
 		path: path.resolve(__dirname),
+		library: 'netteAjax',
+		libraryTarget: 'umd',
+		libraryExport: 'default',
 	},
 	module: {
 		rules: [

@@ -5,7 +5,8 @@
   "main": "dist/nette-ajax.min.js",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack --watch --mode development",
+    "start": "webpack --watch --mode production",
+    "watch": "webpack --watch --mode development",
     "watch:js": "babel src --out-dir js --extensions \".ts,.tsx\" --source-maps inline --watch",
     "build:js": "babel src --out-dir js --extensions \".ts,.tsx\" --source-maps inline"
   },
