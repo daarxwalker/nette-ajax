@@ -11,12 +11,14 @@ Old browsers are supported.
 MIT
 
 
+&nbsp;
 ## **Installation**
 
 ```
 $ npm i -S @daar/nette-ajax
 ```
 
+&nbsp;
 ## **How to use it**
 Library provides more options how to use it.
 
@@ -24,10 +26,11 @@ If you only need ajaxify your handlers, just add them class `ajax`.
 
 You can change default selector in config, we'll talk about it below.
 
-If you don't want to, or you can't add class, you can't switch on default ajaxify option in config, too, more below.
+If you don't want to, or you can't add class, you can switch on default ajaxify option in config, too, more below.
 
 If you want to use callbacks, you can do that with extension(s). Just add to handler `data-nette-ext="EXTENSION_ID"`, or you can change data attribute name with config, too.
 
+&nbsp;
 ## **Initialization**
 ```javascript
 netteAjax.init()
@@ -37,6 +40,7 @@ netteAjax.init()
 netteAjax.init(config)
 ```
 
+&nbsp;
 ## **Initialization config**
 All options are optional, even config is optional.
 
@@ -44,12 +48,13 @@ Config below includes default values.
 ```javascript
 const config = {
     ajaxify: false,
-	debounceDelay: 400,
-	extensionAttr: 'data-nette-ext',
-	selector: '.ajax',
+    debounceDelay: 400,
+    extensionAttr: 'data-nette-ext',
+    selector: '.ajax',
 }
 ```
 
+&nbsp;
 ## **Extensions**
 If you need to call something in callbacks, you can do it with extension(s).
 
@@ -64,9 +69,9 @@ First one, you can do it with global object, which you have to include to `<head
     ...
 </head>
 ```
-Then you need specify extension in script, scroll below to see.
+Then you need specify extension in script, scroll below to more info.
 
-OR
+**OR**
 
 In your JavaScript (TypeScript), you can call function to register extension.
 ```javascript
@@ -79,6 +84,7 @@ You can do both, all extensions (global and local) are included to current insta
 
 This options help variability of use.
 
+&nbsp;
 ### Extension config
 All options are optional.
 
@@ -109,7 +115,7 @@ const extensionConfig = {
 ```html
 <script type="text/javascript">
     netteExts['EXTENSION_ID'] = extensionConfig
-</scirpt>
+</script>
 ```
 
 **Local extension**
@@ -117,6 +123,7 @@ const extensionConfig = {
 netteAjax.ext('EXTENSION_ID', extensionConfig)
 ```
 
+&nbsp;
 ## **Manual call ajax**
 Sometimes you need just call ajax call, you can do it simple.
 ```javascript
@@ -126,16 +133,19 @@ First argument `target` can be **extension id** or **url**. Function looks for e
 
 Second argument `extensionConfig` is optional. Options are as same as above.
 
+&nbsp;
 ## **XHR Request**
 Library uses Axios, more info above.
 
 Request can be stopped in `onBefore` and `onStart` callbacks, with method `stop` included in payload, example above.
 
+&nbsp;
 ## **Snippets**
 All snippets are redrawed, if handler does not include `data-nette-ext`, or manual ajax is called with **url**, instead of **extension id**.
 
 After redraw, events are automatically assigned to handlers in snippet(scope). 
 
+&nbsp;
 ## **All functions**
 | Function |        Arguments        |
 |:--------:|:-----------------------:|
@@ -145,6 +155,7 @@ After redraw, events are automatically assigned to handlers in snippet(scope).
 
 ** argument? - optional
 
+&nbsp;
 ## **Supported elements**
 All these elements are supported for ajax:
 
