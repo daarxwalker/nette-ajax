@@ -1,4 +1,3 @@
-import { errors } from 'constant'
 import { Config } from 'types'
 
 const HANDLER_SELECTOR = '.ajax'
@@ -6,14 +5,15 @@ const EXTENSION_ATTRIBUTE = 'data-nette-ext'
 const DEBOUNCE_DELAY = 300
 
 let config: Config = {
-	selector: HANDLER_SELECTOR,
-	extensionAttr: EXTENSION_ATTRIBUTE,
+	ajaxify: false,
 	debounceDelay: DEBOUNCE_DELAY,
+	extensionAttr: EXTENSION_ATTRIBUTE,
+	selector: HANDLER_SELECTOR,
 }
 
 export const getConfig = () => config
 
 export const updateConfig = (data?: Config) => {
-	if (!data) throw new Error(errors.config.missingConfigData)
+	if (!data) return
 	config = { ...config, ...data }
 }

@@ -1,11 +1,12 @@
 import { errors } from 'constant'
 import { registerEvent, getConfig } from 'services'
+import { getDefaultHandlers } from 'utils'
 
-export const registerHandlers = (scope?: Element) => {
+export const registerHandlers = (scope?: HTMLElement | Document) => {
 	const config = getConfig()
-	const { selector } = config
+	const { selector, ajaxify } = config
 
-	const handlers = (scope || document).querySelectorAll(selector)
+	const handlers = (scope || document).querySelectorAll(ajaxify ? getDefaultHandlers() : selector)
 	const handlersLength = handlers.length
 
 	if (handlersLength === 0) throw new Error(errors.handler.missingHandlers)

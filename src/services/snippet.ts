@@ -1,16 +1,35 @@
 import { errors } from 'constant'
+import { SnippetAppend } from 'models'
+import { registerHandlers } from 'services'
 import { parseDOM, removeAllChildNodes } from 'utils'
 import { Snippets } from 'types'
 
-import { registerHandlers } from 'services'
+const getSnippetParentNode = (snippet: Element) => {
+	const { parentNode } = snippet
+	if (parentNode) return snippet.parentNode
+	return snippet
+}
 
-export const handleRedrawSnippet = (snippet: Element, dom: string) => {
+export const handleRedrawSnippet = (snippet: Element, dom: string, optionalAppend?: SnippetAppend | false) => {
 	if (!snippet) throw new Error(errors.snippet.missingSnippet)
 	const parsedDom = parseDOM(dom)
 
 	if (!parsedDom) throw new Error(errors.utils.parseDomFailed)
-	removeAllChildNodes(snippet)
-	snippet.appendChild(parsedDom)
+	if (!optionalAppend) {
+		removeAllChildNodes(snippet)
+		snippet.appendChild(parsedDom)
+	}
+	const shouldOptionalAppend = snippet.parentNode && optionalAppend
+	if (shouldOptionalAppend && optionalAppend === SnippetAppend.pre) {
+		snippet.parentNode!.insertBefore(parsedDom, snippet)
+	}
+	if (shouldOptionalAppend && optionalAppend === SnippetAppend.after) {
+		if (snippet.nextSibling) {
+			snippet.parentNode!.insertBefore(parsedDom, snippet.nextSibling)
+		} else {
+			snippet.parentNode!.appendChild(parsedDom)
+		}
+	}
 }
 
 export const redrawSnippets = (snippets: Snippets) => {
@@ -23,9 +42,10 @@ export const redrawSnippets = (snippets: Snippets) => {
 		const snippetId = snippetsIds[i]
 		const snippetDom = snippets[snippetId]
 		const snippet = document.getElementById(snippetId)
+		const optionalAppend = !!snippet && (snippet.getAttribute('data-ajax-append') as SnippetAppend)
 
 		if (!snippet) throw new Error(errors.snippet.missingSnippet)
-		handleRedrawSnippet(snippet, snippetDom)
-		registerHandlers(snippet)
+		handleRedrawSnippet(snippet, snippetDom, optionalAppend)
+		if (!optionalAppend) registerHandlers(snippet)
 	}
 }

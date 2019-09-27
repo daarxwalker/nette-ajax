@@ -1,4 +1,5 @@
 export * from './Event'
 export * from './Extension'
+export * from './Snippet'
 export * from './Tag'
 export * from './TagType'

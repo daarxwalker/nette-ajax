@@ -15,10 +15,10 @@ export const registerEvent = (handler: Element) => {
 	const url = getUrlByHandler(handler)
 	const extensionId = handler.getAttribute(extensionAttr)
 
-	const handleRequest = async (e: Event) => {
+	const handleRequest = (e: Event) => {
 		e.preventDefault()
 		const target = extensionId || url || ''
-		await makeRequest(target)
+		makeRequest(target)
 	}
 
 	handler.addEventListener(

@@ -2,7 +2,6 @@ const alreadyInitialized = 'Nette-ajax already initialized!'
 const missingExtensionId = 'Missing extension id!'
 const missingExtension = 'Missing extension!'
 const missingTarget = 'Missing target!'
-const missingConfigData = 'Missing new config data!'
 const missingHandler = 'Missing handler!'
 const missingCallbackType = 'Missing callback type!'
 const missingHandlers = 'No handlers found!'
@@ -25,9 +24,6 @@ export const errors = {
 	request: {
 		missingTarget,
 		requestFailed,
-	},
-	config: {
-		missingConfigData,
 	},
 	event: {
 		missingHandler,

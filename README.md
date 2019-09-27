@@ -3,7 +3,7 @@ Minimalistic easy-to-use Nette AJAX library.
 
 Written in pure TypeScript, uses modern library Axios for XMLHttpRequests.
 
-Old browsers are supported.
+IE 11 supported.
 
 **EXPERIMENTAL FEATURE:**  Library has included jQuery nette-ajax wrapper, which helps you migrate. I do not guarantee full functionality because the library does not contain everything of jQuery nette-ajax.
 
@@ -145,6 +145,8 @@ All snippets are redrawed, if handler does not include `data-nette-ext`, or manu
 
 After redraw, events are automatically assigned to handlers in snippet(scope). 
 
+You can add to snippet `data-ajax-append` to append `pre` or `after`. This way appended elements aren't ajaxified!
+
 &nbsp;
 ## **All functions**
 | Function |        Arguments        |
@@ -161,4 +163,4 @@ All these elements are supported for ajax:
 
 `a`, `button`, `form`, `textarea`, `input[type="text"]`, `input[type="image"]`, `input[type="radio"]`, `input[type="checkbox"]`
 
-If you give some other element class `ajax`, it will use `click` event.
+If you give some other element class `ajax` and the element is not writeable or changeable, it will use `click` event.
