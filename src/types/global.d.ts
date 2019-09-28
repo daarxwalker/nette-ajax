@@ -8,5 +8,6 @@ declare global {
 			request: (target: string, config: Extension, extensions: Extensions) => void
 		}
 		netteExts: Extensions
+		$?: any
 	}
 }

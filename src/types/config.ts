@@ -1,7 +1,8 @@
 export type Config = {
-	ajaxify?: boolean
-	debounceDelay?: number
-	extensionAttr?: string
-	initialized?: boolean
-	selector?: string
+	ajaxify: boolean
+	appendAttr: string
+	debounceDelay: number
+	extensionAttr: string
+	initialized: boolean
+	selector: string
 }

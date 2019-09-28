@@ -7,6 +7,13 @@ const netteAjax = {
 	request: makeRequest,
 }
 
+// Experimental fallback for old-way jQuery nette-ajax
+window.$.nette = {
+	init,
+	ext: registerExtension,
+	ajax: makeRequest,
+}
+
 window.netteAjax = netteAjax
 
 export default netteAjax

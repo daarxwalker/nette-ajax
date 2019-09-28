@@ -55,5 +55,8 @@
 		"localStorage": false,
 		"sessionStorage": false,
 		"location": false
+	},
+	"env": {
+		"jest": true
 	}
 }

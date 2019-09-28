@@ -2,7 +2,9 @@ import { errors } from 'constant'
 import { registerEvent, getConfig } from 'services'
 import { getDefaultHandlers } from 'utils'
 
-export const registerHandlers = (scope?: HTMLElement | Document) => {
+const registeredHandlers = [] as Array<Element>
+
+export const registerHandlers = (scope?: Element) => {
 	const config = getConfig()
 	const { selector, ajaxify } = config
 
@@ -12,6 +14,9 @@ export const registerHandlers = (scope?: HTMLElement | Document) => {
 	if (handlersLength === 0) throw new Error(errors.handler.missingHandlers)
 	for (let i = -1; ++i < handlersLength; ) {
 		const handler = handlers[i]
-		registerEvent(handler)
+		if (registeredHandlers.indexOf(handler) === -1) {
+			registeredHandlers.push(handler)
+			registerEvent(handler)
+		}
 	}
 }

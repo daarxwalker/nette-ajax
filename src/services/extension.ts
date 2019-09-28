@@ -30,6 +30,7 @@ const getPayload = (type: ExtensionCallbackType, extension: Extension, payload: 
 	if (type === ExtensionCallbackType.init) return extension
 	if (
 		type === ExtensionCallbackType.before ||
+		type === ExtensionCallbackType.load ||
 		type === ExtensionCallbackType.success ||
 		type === ExtensionCallbackType.complete ||
 		type === ExtensionCallbackType.error

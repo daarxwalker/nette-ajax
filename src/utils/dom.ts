@@ -23,4 +23,5 @@ export const removeAllChildNodes = (parent: Element) => {
 	while (parent.lastChild) {
 		parent.removeChild(parent.lastChild)
 	}
+	return parent
 }

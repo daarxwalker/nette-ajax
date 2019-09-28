@@ -9,6 +9,7 @@ export type Extension = AxiosRequestConfig & ExtensionCallbacks
 
 export type ExtensionCallbacks = {
 	onInit?: (extension?: Extension) => void
+	onLoad?: (payload?: Extension) => void
 	onBefore?: (payload?: PayloadIncluded) => void
 	onStart?: (payload?: PayloadIncluded) => void
 	onSuccess?: (payload?: RequestPayloadData) => void

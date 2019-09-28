@@ -48,6 +48,7 @@ Config below includes default values.
 ```javascript
 const config = {
     ajaxify: false,
+    appendAttr: 'data-ajax-append',
     debounceDelay: 400,
     extensionAttr: 'data-nette-ext',
     selector: '.ajax',
@@ -103,11 +104,12 @@ const requestConfig = {
 const extensionConfig = {
     ...requestConfig,
     onInit: extension => {},
+    onLoad: extension => {},
     onBefore: ({ isPending, stop }) => {},
     onStart: ({ isPending, stop }) => {},
-    onSuccess: payload => {},
+    onSuccess: ({ ...payload, isPending }) => {},
     onComplete: payload => {},
-    onError: () => {},
+    onError: err => {},
 }
 ```
 
@@ -148,7 +150,7 @@ All snippets are redrawed, if handler does not include `data-nette-ext`, or manu
 
 After redraw, events are automatically assigned to handlers in snippet(scope). 
 
-You can add to snippet `data-ajax-append` to append `pre` or `after`. This way appended elements aren't ajaxified!
+You can add to snippet `data-ajax-append` to append `pre` or `after`. This way appended elements are automatically ajaxified!
 
 &nbsp;
 ## **All functions**
@@ -167,3 +169,5 @@ All these elements are supported for ajax:
 `a`, `button`, `form`, `textarea`, `input[type="text"]`, `input[type="image"]`, `input[type="radio"]`, `input[type="checkbox"]`
 
 If you give some other element class `ajax` and the element is not writeable or changeable, it will use `click` event.
+
+Text inputs and textarea are debounced by default.

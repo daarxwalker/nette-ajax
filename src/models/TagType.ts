@@ -3,4 +3,6 @@ export enum TagType {
 	image = 'image',
 	submit = 'submit',
 	text = 'text',
+	radio = 'radio',
+	checkbox = 'checkbox',
 }

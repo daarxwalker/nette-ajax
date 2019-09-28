@@ -35,16 +35,18 @@ export const makeRequest = (target: string, customExt?: Extension) => {
 		})
 	}
 
-	newRequest()
+	return newRequest()
 		.then(payload => {
 			const { data } = payload
 			const payloadData = data || {}
-			dispatchCallbacks(ExtensionCallbackType.success, extensionByTarget, payloadData)
+			dispatchCallbacks(ExtensionCallbackType.success, extensionByTarget, { ...payloadData, isPending: false })
 			redrawSnippets(data.snippets || {})
 			dispatchCallbacks(ExtensionCallbackType.complete, extensionByTarget, payloadData)
+			dispatchCallbacks(ExtensionCallbackType.load, extensionByTarget, extensionByTarget)
 		})
-		.catch(() => {
-			dispatchCallbacks(ExtensionCallbackType.error, extensionByTarget, errors.request.requestFailed)
-			throw new Error(errors.request.requestFailed)
+		.catch(err => {
+			dispatchCallbacks(ExtensionCallbackType.error, extensionByTarget, err)
+			dispatchCallbacks(ExtensionCallbackType.complete, extensionByTarget, err)
+			throw new Error(err)
 		})
 }
