@@ -8,10 +8,12 @@ const netteAjax = {
 }
 
 // Experimental fallback for old-way jQuery nette-ajax
-window.$.nette = {
-	init,
-	ext: registerExtension,
-	ajax: makeRequest,
+if (window.$) {
+	window.$.nette = {
+		init,
+		ext: registerExtension,
+		ajax: makeRequest,
+	}
 }
 
 window.netteAjax = netteAjax
