@@ -43,6 +43,7 @@ export const makeRequest = (target: string, customExt?: Extension) => {
 			redrawSnippets(data.snippets || {})
 			dispatchCallbacks(ExtensionCallbackType.complete, extensionByTarget, payloadData)
 			dispatchCallbacks(ExtensionCallbackType.load, extensionByTarget, extensionByTarget)
+			return payload
 		})
 		.catch(err => {
 			dispatchCallbacks(ExtensionCallbackType.error, extensionByTarget, err)

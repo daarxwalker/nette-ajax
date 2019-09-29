@@ -5,8 +5,8 @@ module.exports = {
 	devtool: 'source-map',
 	entry: ['./src/index.ts'],
 	output: {
-		filename: './dist/nette-ajax.min.js',
-		path: path.resolve(__dirname),
+		filename: 'nette-ajax.min.js',
+		path: path.resolve(__dirname, 'dist'),
 		library: 'netteAjax',
 		libraryTarget: 'umd',
 		libraryExport: 'default',
