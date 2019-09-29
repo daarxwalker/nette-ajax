@@ -6,9 +6,20 @@ Written in pure TypeScript, uses modern library Axios for XMLHttpRequests.
 IE 11 supported.
 
 **EXPERIMENTAL FEATURE:**  Library has included jQuery nette-ajax wrapper, which helps you migrate. I do not guarantee full functionality because the library does not contain everything of jQuery nette-ajax.
+If you just loading library with **script tag**, bring it to end of body before "/body" end tag or wrapper won't work.
+
 
 **License**
 MIT
+
+&nbsp;
+## **Goals**
+- ~~Add more examples~~
+- Send input or textarea value as payload
+- Multiple extensions restriction
+- Add more of more examples
+
+... more goals in the future
 
 
 &nbsp;
@@ -29,6 +40,10 @@ You can change default selector in config, we'll talk about it below.
 If you don't want to, or you can't add class, you can switch on default ajaxify option in config, too, more below.
 
 If you want to use callbacks, you can do that with extension(s). Just add to handler `data-nette-ext="EXTENSION_ID"`, or you can change data attribute name with config, too.
+
+&nbsp;
+## **Recommendations**
+- Add new local extension before init.
 
 &nbsp;
 ## **Initialization**
@@ -124,7 +139,10 @@ const extensionConfig = {
 ```javascript
 netteAjax.ext('EXTENSION_ID', extensionConfig)
 ```
-**Recommendation**: Add new local extension before init. 
+
+**Recommendation**: Add new local extension before init.
+
+**IMPORTANT!**: If you want dispatch only one extenion callbacks, you have to add `data-nette-ext` to handler with **extension id** as value 
 
 **IMPORTANT!**: If you register local extension after init, it will work, but all handlers are automatically re-registered for every new extension and it's really too overkill operation. Be careful with performance issues. 
 
@@ -171,3 +189,98 @@ All these elements are supported for ajax:
 If you give some other element class `ajax` and the element is not writeable or changeable, it will use `click` event.
 
 Text inputs and textarea are debounced by default.
+
+## Examples
+
+&nbsp;
+**1)** Using library old way with script tag
+
+**HTML:**
+```html
+<body>
+    <div n:snippet="test">
+        <p>Test content</p>
+        <a n:href="test!" class="ajax" data-nette-ext="testExtension">Ajax test</a>
+    </div>    
+
+    <script type="text/javascript" src="js/netteAjax.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            netteAjax.ext('testExtension', {
+                onInit: function() {
+                    console.log('Test extension inited')
+                }
+                onSuccess: function() {
+                    console.log('Ajax success and snippets were redrawed')
+                }     
+            })  
+
+            netteAjax.init()
+        })  
+    </script>
+</body>
+```
+
+&nbsp;
+**2)** Using library better way in your JavaScript files, ajaxied, no need of `ajax` classes
+
+**HTML:**
+```html
+<body>
+    <div n:snippet="test">
+        <p>Test content</p>
+        <a n:href="test!" data-nette-ext="testExtension">Ajax test</a>
+    </div>    
+
+    <script type="text/javascript" src="js/bundle.min.js"></script>
+</body>
+```
+
+**JS:**
+```javascript
+const newNetteAjax = () => {
+  const netteAjaxConfig = { 
+    ajaxify: true
+  }
+  netteAjax.init(netteAjaxConfig)
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  newNetteAjax()
+})
+```
+
+**3)** Using global extension
+
+**HTML:**
+```html
+<head xmlns="http://www.w3.org/1999/html">
+    <script type="text/javascript">window.netteExts = {}</script>
+</head>
+<body>
+    <div n:snippet="test">
+        <p>Test</p>
+        <textarea data-nette-ext="testExtension"></textarea>
+    </div>    
+
+    <script type="text/javascript" src="js/netteAjax.min.js"></script>
+    <script type="text/javascript">
+        netteExts['testExtension'] = {
+            url: {link test!}, // Need to escape latte in js, just example
+            onInit: function() {
+                console.log('Test extension inited')
+            }
+            onSuccess: function() {
+                console.log('Ajax success and snippets were redrawed')
+            }     
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {      
+            var netteAjaxConfig = { 
+                ajaxify: true
+            }
+            netteAjax.init(netteAjaxConfig)
+        })  
+    </script>
+</body>
+```
