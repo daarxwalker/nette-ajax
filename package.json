@@ -1,6 +1,6 @@
 {
   "name": "@daar/nette-ajax",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimalistic easy-to-use Nette AJAX library",
   "main": "dist/nette-ajax.min.js",
   "scripts": {
