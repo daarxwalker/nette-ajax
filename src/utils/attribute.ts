@@ -14,3 +14,10 @@ export const getUrlByHandler = (handler: Element) => {
 			return null
 	}
 }
+
+export const getMethodByHandler = (handler: Element) => {
+	const tagName = getTagNameByElement(handler)
+	if (!tagName) return null
+	if (tagName === Tag.form) return handler.getAttribute('method')
+	return null
+}
