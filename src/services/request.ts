@@ -18,14 +18,14 @@ export const makeRequest = (target: string, extensionCustomConfig?: Extension) =
 	const extension = { ...extensionByTarget, ...extensionCustomConfig }
 	const { data, url, method, responseType, headers, ...rest } = extension
 	const requestData = tagName === Tag.form ? makeFormData(handler as HTMLFormElement) : data
-	const requestMethod = handlerMethod || method || 'GET'
+	const requestMethod = method || handlerMethod || 'GET'
 	const shouldAddDataToConfig = requestMethod.toLowerCase() !== 'get'
 	const requestConfig = {
 		...rest,
 		data: shouldAddDataToConfig ? requestData : {},
 		cancelToken: requestSource.token,
 		url: makeUrl(requestMethod, target, url || handlerUrl, requestData),
-		method: handlerMethod || requestMethod,
+		method: requestMethod,
 		responseType: responseType || 'json',
 		headers: { ...headers, 'X-Requested-With': 'XMLHttpRequest' },
 	}
