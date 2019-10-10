@@ -1,13 +1,12 @@
 import { errors } from 'constant'
-import { registerHandlers, registerExtensionsFromGlobal, getConfig, updateConfig } from 'services'
+import { registerHandlers, registerExtensionsFromGlobal, updateConfig, getState, setState } from 'services'
 import { Config } from 'types'
 
 export const init = (customConfig?: Config) => {
-	const config = getConfig()
-	const { initialized } = config
+	const { initialized } = getState()
 	if (initialized) throw new Error(errors.init.alreadyInitialized)
 	updateConfig(customConfig)
 	registerExtensionsFromGlobal()
 	registerHandlers()
-	updateConfig({ initialized: true })
+	setState({ initialized: true })
 }

@@ -1,53 +1,55 @@
 import axios, { AxiosResponse } from 'axios'
 
 import { errors } from 'constant'
-import { ExtensionCallbackType } from 'models'
+import { ExtensionCallbackType, Tag } from 'models'
 import { RequestPayloadData, Extension } from 'types'
+import { dispatchCallbacks, redrawSnippets, getExtensions, getState, resetState } from 'services'
+import { getExtensionById, makeFormData, makeUrl } from 'utils'
 
-import { dispatchCallbacks, redrawSnippets, getExtensions } from 'services'
-import { getExtensionById } from 'utils'
-
-const getUrl = (target: string, extensionKeysExist: boolean, customExt?: Extension, url?: string) => {
-	if ((extensionKeysExist && !customExt) || (!extensionKeysExist && customExt)) return url
-	return target
-}
-
-export const makeRequest = (target: string, customExt?: Extension) => {
+export const makeRequest = (target: string, extensionCustomConfig?: Extension) => {
 	if (!target) throw new Error(errors.request.missingTarget)
-	const extensions = getExtensions()
-	const extensionByTarget = customExt || getExtensionById(target, extensions)
-	const extensionKeys = extensionByTarget && Object.keys(extensionByTarget)
 	const requestCancelToken = axios.CancelToken
 	const requestSource = requestCancelToken.source()
 	const stop = requestSource.cancel
-	const { url, method, responseType, headers, ...rest } = extensionByTarget
 
-	dispatchCallbacks(ExtensionCallbackType.before, extensionByTarget, { isPending: false, stop })
+	const { handlerUrl, handlerMethod, tagName, handler } = getState()
+	const extensions = getExtensions()
+	const extensionByTarget = getExtensionById(target, extensions)
+	const extension = { ...extensionByTarget, ...extensionCustomConfig }
+	const { data, url, method, responseType, headers, ...rest } = extension
+	const requestData = tagName === Tag.form ? makeFormData(handler as HTMLFormElement) : data
+	const requestMethod = method || handlerMethod || 'GET'
+	const shouldAddDataToConfig = requestMethod.toLowerCase() !== 'get'
+	const requestConfig = {
+		...rest,
+		data: shouldAddDataToConfig ? requestData : {},
+		cancelToken: requestSource.token,
+		url: makeUrl(requestMethod, target, url || handlerUrl, requestData),
+		method: requestMethod,
+		responseType: responseType || 'json',
+		headers: { ...headers, 'X-Requested-With': 'XMLHttpRequest' },
+	}
+
+	dispatchCallbacks(ExtensionCallbackType.before, extension, { isPending: false, stop })
 	const newRequest = (): Promise<AxiosResponse<RequestPayloadData>> => {
-		dispatchCallbacks(ExtensionCallbackType.start, extensionByTarget, { isPending: true, stop })
-		return axios({
-			...rest,
-			cancelToken: requestSource.token,
-			url: getUrl(target, extensionKeys.length > 0, customExt, url),
-			method: method || 'GET',
-			responseType: responseType || 'json',
-			headers: { ...headers, 'X-Requested-With': 'XMLHttpRequest' },
-		})
+		dispatchCallbacks(ExtensionCallbackType.start, extension, { isPending: true, stop })
+		return axios(requestConfig)
 	}
 
 	return newRequest()
 		.then(payload => {
-			const { data } = payload
-			const payloadData = data || {}
-			dispatchCallbacks(ExtensionCallbackType.success, extensionByTarget, { ...payloadData, isPending: false })
-			redrawSnippets(data.snippets || {})
-			dispatchCallbacks(ExtensionCallbackType.complete, extensionByTarget, payloadData)
-			dispatchCallbacks(ExtensionCallbackType.load, extensionByTarget, extensionByTarget)
+			const payloadData = payload.data || {}
+			dispatchCallbacks(ExtensionCallbackType.success, extension, { ...payloadData, isPending: false })
+			redrawSnippets(payloadData.snippets || {})
+			dispatchCallbacks(ExtensionCallbackType.complete, extension, payloadData)
+			dispatchCallbacks(ExtensionCallbackType.load, extension, extension)
+			resetState()
 			return payload
 		})
 		.catch(err => {
-			dispatchCallbacks(ExtensionCallbackType.error, extensionByTarget, err)
-			dispatchCallbacks(ExtensionCallbackType.complete, extensionByTarget, err)
+			dispatchCallbacks(ExtensionCallbackType.error, extension, err)
+			dispatchCallbacks(ExtensionCallbackType.complete, extension, err)
+			resetState()
 			throw new Error(err)
 		})
 }

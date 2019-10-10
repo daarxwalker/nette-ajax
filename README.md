@@ -15,9 +15,9 @@ MIT
 &nbsp;
 ## **Goals**
 - ~~Add more examples~~
-- Send input or textarea value as payload
-- Multiple extensions restriction
-- Add more of more examples
+- ~~Send input or textarea value as payload~~
+- ~~Multiple extensions restriction~~
+- ~~Add more of more examples~~
 
 ... more goals in the future
 
@@ -109,6 +109,9 @@ Options include all Axios options for great variability of extension request con
 You can build your extension config with axios options and callbacks with props below.
 
 Callbacks are dispatched by scope. If handler has 'data-nette-ext' with id of existed component, the extension callbacks are only dispatched. If not, callbacks of all existed extensions are dispatched on request.
+
+Hooks are cool feature, which give you power to call another extensions when current extension is called.
+
 ```javascript
 const requestConfig = {
     ...restAxiosRequestConfig, // Just for example, not needed.
@@ -118,6 +121,7 @@ const requestConfig = {
 
 const extensionConfig = {
     ...requestConfig,
+    hooks: ['ANOTHER_EXTENSION_ID'],
     onInit: extension => {},
     onLoad: extension => {},
     onBefore: ({ isPending, stop }) => {},
@@ -154,7 +158,7 @@ netteAjax.request(target, extensionConfig)
 ```
 First argument `target` can be **extension id** or **url**. Function looks for extension, if no extension found, then use url, do ajax call and trigger all extensions callbacks.
 
-Second argument `extensionConfig` is optional. Options are as same as above.
+Second argument `extensionConfig` is optional. Options are as same as above. If extension exists, then custom config will be merged with extension config.
 
 &nbsp;
 ## **XHR Request**
