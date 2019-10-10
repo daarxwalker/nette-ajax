@@ -3,12 +3,13 @@ import debounce from 'debounce'
 import { errors } from 'constant'
 import { getConfig, makeRequest, setState } from 'services'
 import { getEventByTagName, getMethodByHandler, getTagNameByElement, getUrlByHandler, isTagWriteable } from 'utils'
-import { TagType } from 'models'
+import { Tag, TagType } from 'models'
 
 type Target = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 
 export const registerEvent = (handler: Element) => {
 	if (!handler) throw new Error(errors.event.missingHandler)
+	const { Nette } = window
 	const config = getConfig()
 	const { extensionAttr, debounceDelay } = config
 	const tagName = getTagNameByElement(handler)
@@ -23,9 +24,12 @@ export const registerEvent = (handler: Element) => {
 		const target = extensionId || url || ''
 		const { value } = e.target as Target
 		setState({ tagName, target, handler, handlerUrl: url, handlerMethod: method })
+
+		if (Nette && tagName === Tag.form && !Nette.validateForm(handler, true)) return
 		makeRequest(target, value ? { data: { value } } : {})
 	}
 
+	if (Nette && tagName === Tag.form) Nette.initForm(handler)
 	handler.addEventListener(
 		event,
 		isTagWriteable(tagName, tagType) ? debounce(handleRequest, debounceDelay) : handleRequest,

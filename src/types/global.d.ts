@@ -9,5 +9,6 @@ declare global {
 		}
 		netteExts: Extensions
 		$?: any
+		Nette: any
 	}
 }
