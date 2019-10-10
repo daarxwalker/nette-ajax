@@ -10,13 +10,12 @@ export const registerHandlers = (scope?: Element) => {
 	const handlers = (scope || document).querySelectorAll(ajaxify ? getDefaultHandlers() : selector)
 	const handlersLength = handlers.length
 
-	if (handlersLength > 0) {
-		for (let i = -1; ++i < handlersLength; ) {
-			const handler = handlers[i]
-			if (registeredHandlers.indexOf(handler) === -1) {
-				registeredHandlers.push(handler)
-				registerEvent(handler)
-			}
+	if (handlersLength === 0) return
+	for (let i = -1; ++i < handlersLength; ) {
+		const handler = handlers[i]
+		if (registeredHandlers.indexOf(handler) === -1) {
+			registeredHandlers.push(handler)
+			registerEvent(handler)
 		}
 	}
 }

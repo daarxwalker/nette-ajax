@@ -8,6 +8,8 @@ export type Extensions = {
 export type Extension = AxiosRequestConfig & ExtensionCallbacks
 
 export type ExtensionCallbacks = {
+	target?: string
+	hooks?: string[]
 	onInit?: (extension?: Extension) => void
 	onLoad?: (payload?: Extension) => void
 	onBefore?: (payload?: PayloadIncluded) => void

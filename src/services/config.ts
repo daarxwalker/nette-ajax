@@ -10,7 +10,6 @@ let config: Config = {
 	appendAttr: APPEND_ATTRIBUTE,
 	debounceDelay: DEBOUNCE_DELAY,
 	extensionAttr: EXTENSION_ATTRIBUTE,
-	initialized: false,
 	selector: HANDLER_SELECTOR,
 }
 

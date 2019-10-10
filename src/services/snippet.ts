@@ -27,19 +27,19 @@ export const handleRedrawSnippet = (snippet: Element, dom: string, optionalAppen
 }
 
 export const redrawSnippets = (snippets: Snippets) => {
-	if (!snippets) throw new Error(errors.snippet.missingSnippets)
+	if (!snippets) return
 	const config = getConfig()
 	const snippetsIds = Object.keys(snippets)
 	const snippetsIdsLength = snippetsIds.length
 
-	if (snippetsIdsLength === 0) throw new Error(errors.snippet.missingSnippets)
+	if (snippetsIdsLength === 0) return
 	for (let i = -1; ++i < snippetsIdsLength; ) {
 		const snippetId = snippetsIds[i]
 		const snippetDom = snippets[snippetId]
 		const snippet = document.getElementById(snippetId)
 		const optionalAppend = !!snippet && (snippet.getAttribute(config.appendAttr) as SnippetAppend)
 
-		if (!snippet) throw new Error(errors.snippet.missingSnippet)
+		if (!snippet) return
 		handleRedrawSnippet(snippet, snippetDom, optionalAppend)
 		registerHandlers(!optionalAppend ? snippet : undefined)
 	}

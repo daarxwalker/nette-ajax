@@ -1,6 +1,6 @@
 import { errors } from 'constant'
 import { ExtensionCallbackType } from 'models'
-import { getConfig, registerHandlers } from 'services'
+import { getState, registerHandlers } from 'services'
 import { Extension, Extensions, RequestPayloadData, PayloadIncluded } from 'types'
 
 type Payload = PayloadIncluded | Extension | RequestPayloadData | string
@@ -18,12 +18,12 @@ export const registerExtensionsFromGlobal = () => {
 export const registerExtension = (id: string, extension: Extension) => {
 	if (!id) throw new Error(errors.ext.register.missingId)
 	if (!extension) throw new Error(errors.ext.register.missingExt)
-	const config = getConfig()
+	const { initialized } = getState()
 	const { onInit } = extension
 
 	if (onInit) onInit(extension)
 	extensions = { ...extensions, [id]: extension }
-	if (config.initialized) registerHandlers()
+	if (initialized) registerHandlers()
 }
 
 const getPayload = (type: ExtensionCallbackType, extension: Extension, payload: Payload) => {
@@ -42,13 +42,16 @@ const getPayload = (type: ExtensionCallbackType, extension: Extension, payload: 
 
 export const dispatchCallbacks = (type: ExtensionCallbackType, extension: Extension, payload: Payload) => {
 	if (!type) throw new Error(errors.callbacks.missingCallbackType)
+	const { hooks } = extension
+	const { target } = getState()
 
 	if (Object.keys(extension).length > 0) {
 		const callback = extension[type] as Callback
 		if (callback) callback(getPayload(type, extension, payload))
-		return
+		if (!hooks) return
 	}
-	const extsIds = Object.keys(extensions)
+
+	const extsIds = hooks || Object.keys(extensions)
 	const exsIdsLength = extsIds.length
 
 	if (exsIdsLength === 0) return
@@ -56,8 +59,9 @@ export const dispatchCallbacks = (type: ExtensionCallbackType, extension: Extens
 		const extId = extsIds[i]
 		const ext = extensions[extId]
 
-		if (!ext || !ext[type]) return
-		const callback = ext[type] as Callback
-		if (callback) callback(getPayload(type, extension, payload))
+		if (extId !== target && ext && ext[type]) {
+			const callback = ext[type] as Callback
+			if (callback) callback(getPayload(type, extension, payload))
+		}
 	}
 }

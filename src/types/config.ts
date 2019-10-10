@@ -3,6 +3,5 @@ export type Config = {
 	appendAttr: string
 	debounceDelay: number
 	extensionAttr: string
-	initialized: boolean
 	selector: string
 }
