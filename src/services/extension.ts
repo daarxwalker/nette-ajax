@@ -1,6 +1,6 @@
 import { errors } from 'constant'
 import { ExtensionCallbackType } from 'models'
-import { getState, registerHandlers } from 'services'
+import { getState, registerHandlers, makeRedirect } from 'services'
 import { Extension, Extensions, RequestPayloadData, PayloadIncluded } from 'types'
 
 type Payload = PayloadIncluded | Extension | RequestPayloadData | string
@@ -44,10 +44,12 @@ export const dispatchCallbacks = (type: ExtensionCallbackType, extension: Extens
 	if (!type) throw new Error(errors.callbacks.missingCallbackType)
 	const { hooks } = extension
 	const { target } = getState()
+	const { redirect } = payload as any
 
 	if (Object.keys(extension).length > 0) {
 		const callback = extension[type] as Callback
 		if (callback) callback(getPayload(type, extension, payload))
+		if (redirect) makeRedirect(redirect)
 		if (!hooks) return
 	}
 
@@ -62,6 +64,7 @@ export const dispatchCallbacks = (type: ExtensionCallbackType, extension: Extens
 		if (extId !== target && ext && ext[type]) {
 			const callback = ext[type] as Callback
 			if (callback) callback(getPayload(type, extension, payload))
+			if (redirect) makeRedirect(redirect)
 		}
 	}
 }
