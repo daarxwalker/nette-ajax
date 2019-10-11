@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { errors } from 'constant'
 import { ExtensionCallbackType, Tag } from 'models'
 import { RequestPayloadData, Extension } from 'types'
-import { dispatchCallbacks, redrawSnippets, getExtensions, getState, resetState } from 'services'
+import { dispatchCallbacks, redrawSnippets, getExtensions, getState, resetState, makeRedirect } from 'services'
 import { getExtensionById, makeFormData, makeUrl } from 'utils'
 
 export const makeRequest = (target: string, extensionCustomConfig?: Extension) => {
@@ -39,7 +39,9 @@ export const makeRequest = (target: string, extensionCustomConfig?: Extension) =
 	return newRequest()
 		.then(payload => {
 			const payloadData = payload.data || {}
+			const { redirect } = payloadData as any
 			dispatchCallbacks(ExtensionCallbackType.success, extension, { ...payloadData, isPending: false })
+			if (redirect) makeRedirect(redirect)
 			redrawSnippets(payloadData.snippets || {})
 			dispatchCallbacks(ExtensionCallbackType.complete, extension, payloadData)
 			dispatchCallbacks(ExtensionCallbackType.load, extension, extension)
