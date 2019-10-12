@@ -1,6 +1,6 @@
 import { errors } from 'constant'
 import { ExtensionCallbackType } from 'models'
-import { getState, registerHandlers, makeRedirect } from 'services'
+import { getState, registerHandlers } from 'services'
 import { Extension, Extensions, RequestPayloadData, PayloadIncluded } from 'types'
 
 type Payload = PayloadIncluded | Extension | RequestPayloadData | string
