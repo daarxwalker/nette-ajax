@@ -213,7 +213,7 @@ Text inputs and textarea are debounced by default.
             netteAjax.ext('testExtension', {
                 onInit: function() {
                     console.log('Test extension inited')
-                }
+                },
                 onSuccess: function() {
                     console.log('Ajax success and snippets were redrawed')
                 }     
