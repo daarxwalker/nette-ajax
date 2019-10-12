@@ -1,7 +1,7 @@
 import { errors } from 'constant'
 import { SnippetAppend } from 'models'
 import { registerHandlers, getConfig } from 'services'
-import { parseDOM, removeAllChildNodes } from 'utils'
+import { parseDOM, removeAllChildNodes, executeDOMScripts } from 'utils'
 import { Snippets } from 'types'
 
 export const handleRedrawSnippet = (snippet: Element, dom: string, optionalAppend?: SnippetAppend | false) => {
@@ -12,6 +12,7 @@ export const handleRedrawSnippet = (snippet: Element, dom: string, optionalAppen
 	if (!optionalAppend) {
 		removeAllChildNodes(snippet)
 		snippet.appendChild(parsedDom)
+		executeDOMScripts(snippet)
 	}
 	const shouldOptionalAppend = snippet.parentNode && optionalAppend
 	if (shouldOptionalAppend && optionalAppend === SnippetAppend.pre) {
